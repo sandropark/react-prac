@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <body></body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // 버튼 컨포넌트를 생성
+    function Btn({ text, changeValueFunc }) {
+      // props로 받은 text와 changeValueFunc를 이용해 여러 버튼을 생성할 수 있다.
+      return (
+        <button
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            borderRadius: 10,
+            padding: "10px 20px",
+            border: "none",
+          }}
+          onClick={changeValueFunc}
+        >
+          {text}
+        </button>
+      );
+    }
+    // 부모 컴포넌트의 상태가 변경되면 모든 자식도 자동으로 리렌더링된다.
+    // React.memo를 사용하면 자식 컴포넌트가 부모 컴포넌트의 상태가 변경되어도 자신의 상태가 변하지 않으면 리렌더링되지 않는다.
+    const MemorizedBtn = React.memo(Btn);
+    function App() {
+      let [value, setValue] = React.useState("Save Changes");
+      function changeValue() {
+        setValue((current) =>
+          current === "Changes Saved" ? "Save Changes" : "Changes Saved"
+        );
+      }
+      return (
+        <div>
+          // 컴포넌트에 props를 전달할 수 있다.
+          <MemorizedBtn text={value} changeValueFunc={changeValue} />
+          <MemorizedBtn text="Confirm" />
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, document.body);
+  </script>
+</html>
